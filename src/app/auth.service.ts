@@ -1,7 +1,7 @@
-import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { inject, Injectable, signal } from "@angular/core";
 
-import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@angular/fire/auth";
+import { catchError, from, map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -9,15 +9,48 @@ import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
 export class AuthService {
   private auth = inject(Auth);
 
-  private isAuthenticated = new BehaviorSubject<boolean>(false);
-  constructor() {}
+  isAuthenticated = signal(false);
 
-  signUp(email: string, password: string) {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredentials) => {
-        // console.log(userCredentials);
-        this.isAuthenticated.next(true);
+  createUser(email: string, password: string): Observable<any> {
+    return from(
+      createUserWithEmailAndPassword(this.auth, email, password)
+    ).pipe(
+      map((userCredential) => ({
+        success: true,
+        data: userCredential.user,
+      })),
+      catchError((error) => {
+        const errorMessage = this.getErrorMessage(error.code);
+        return from([{ success: false, error: errorMessage }]);
       })
-      .catch((error) => console.error(error));
+    );
+  }
+
+  loginUser(email: string, password: string): Observable<any> {
+    return from(
+      signInWithEmailAndPassword(this.auth, email, password)
+    ).pipe(
+      map((userCredential) => ({
+        success: true,
+        data: userCredential.user,
+      })),
+      catchError((error) => {
+        const errorMessage = this.getErrorMessage(error.code);
+        return from([{ success: false, error: errorMessage }]);
+      })
+    );
+  }
+
+  private getErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+      case "auth/email-already-in-use":
+        return "This email is already in use.";
+      case "auth/invalid-email":
+        return "The email address is invalid.";
+      case "auth/weak-password":
+        return "The password is too weak.";
+      default:
+        return "An unknown error occurred. Please try again.";
+    }
   }
 }

@@ -4,22 +4,15 @@
   <!-- Contenedor Principal -->
   <div class="w-full max-w-lg p-6 space-y-6">
     <div class="space-y-4">
-      @if (isSignUp) {
+      @if (isSignUp()) {
       <!-- Formulario de Registro -->
       <h2 class="text-2xl font-bold">Create Account</h2>
       <form
         #form="ngForm"
-        (ngSubmit)="signUp(form)"
+        (ngSubmit)="createUser(form)"
         class="flex flex-col items-center"
       >
         <div class="space-y-2">
-          <input
-            name="name"
-            ngModel
-            type="text"
-            placeholder="Full name"
-            class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
           <input
             name="email"
             ngModel
@@ -35,6 +28,11 @@
             class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
+
+        @if (error()) {
+        <p class="text-red-500 text-sm mt-1">{{ error() }}</p>
+        }
+
         <button
           type="submit"
           class="w-1/2 mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold"
@@ -61,21 +59,25 @@
       } @else {
       <!-- Formulario de Inicio de Sesión -->
       <h2 class="text-2xl font-bold">Welcome Back</h2>
-      <form>
+      <form #form="ngForm" (ngSubmit)="loginUser(form)">
         <div class="space-y-2">
           <input
+            name="email"
+            ngModel
             type="email"
             placeholder="Email"
             class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input
+            name="email"
+            ngModel
             type="password"
             placeholder="Password"
             class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
         <button
-          type="button"
+          type="submit"
           class="w-full mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-md font-semibold"
         >
           Log in
