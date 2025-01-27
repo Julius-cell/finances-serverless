@@ -3,10 +3,11 @@ import { effect, inject, Injectable, signal } from "@angular/core";
 import {
   Auth,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "@angular/fire/auth";
-import { catchError, from, map, Observable, of } from "rxjs";
+import { catchError, from, map, Observable, of, tap } from "rxjs";
 import { UserState } from "./auth.interfaces";
 
 @Injectable({
@@ -79,6 +80,10 @@ export class AuthService {
         return { success: true, data: null, error: null };
       })
     );
+  }
+
+  resetPassword(email: string): Observable<void> {
+    return from(sendPasswordResetEmail(this.auth, email));
   }
 
   private getErrorMessageRegister(errorCode: string): string {

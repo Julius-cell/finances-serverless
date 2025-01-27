@@ -11,6 +11,7 @@ import { AuthService } from "./auth.service";
 })
 export class AuthComponent implements OnInit {
   isSignUp = signal(true);
+  isRecoveryPass = signal(false);
   error = signal("");
 
   private readonly router = inject(Router);
@@ -40,9 +41,25 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  navigateTo(route: "login" | "sign-up") {
-    this.isSignUp.set(route === "sign-up");
-    const targetRoute = "/" + route;
-    this.router.navigate([targetRoute]);
+  recoverPassword(form: NgForm) {
+    const { email } = form.value;
+    this.authService.resetPassword(email).subscribe(() => {
+      this.isRecoveryPass.set(false);
+    });
+  }
+
+  navigateTo(route: "login" | "sign-up" | "forgot-password") {
+    switch (route) {
+      case "login":
+        this.isRecoveryPass.set(false);
+        this.isSignUp.set(false);
+        break;
+      case "sign-up":
+        this.isSignUp.set(true);
+        break;
+      case "forgot-password":
+        this.isRecoveryPass.set(true);
+        break;
+    }
   }
 }
