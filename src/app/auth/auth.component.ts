@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { FormsModule, NgForm } from "@angular/forms";
-import { AuthService } from "../auth.service";
+import { AuthService } from "./auth.service";
 
 @Component({
   selector: "tpl-auth",
@@ -10,18 +10,13 @@ import { AuthService } from "../auth.service";
   standalone: true,
 })
 export class AuthComponent implements OnInit {
-  isSignUp = signal(false);
+  isSignUp = signal(true);
   error = signal("");
 
-  private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
-  ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.isSignUp.set(data["isSignUp"]);
-    });
-  }
+  ngOnInit() {}
 
   createUser(form: NgForm) {
     const { email, password } = form.value;
@@ -29,7 +24,7 @@ export class AuthComponent implements OnInit {
       if (response.success) {
         this.router.navigate(["/dashboard"]);
       } else {
-        this.error.set(response.error);
+        this.error.set(response.error!);
       }
     });
   }
@@ -37,12 +32,17 @@ export class AuthComponent implements OnInit {
   loginUser(form: NgForm) {
     const { email, password } = form.value;
     this.authService.loginUser(email, password).subscribe((response) => {
-      console.log(response);
+      if (response.success) {
+        this.router.navigate(["/dashboard"]);
+      } else {
+        this.error.set(response.error!);
+      }
     });
   }
 
-  toggleSignUp() {
-    const targetRoute = this.isSignUp.asReadonly() ? "/login" : "/sign-up";
+  navigateTo(route: "login" | "sign-up") {
+    this.isSignUp.set(route === "sign-up");
+    const targetRoute = "/" + route;
     this.router.navigate([targetRoute]);
   }
 }

@@ -30,7 +30,7 @@
         </div>
 
         @if (error()) {
-        <p class="text-red-500 text-sm mt-1">{{ error() }}</p>
+        <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
         }
 
         <button
@@ -40,26 +40,21 @@
           Sign up
         </button>
       </form>
-      <!-- Social Login -->
-      <!-- <div class="flex items-center justify-center space-x-2">
-        <span class="text-sm text-gray-400">or</span>
-        <div class="flex space-x-4">
-          <button class="p-2 bg-gray-700 rounded-full">
-            <img src="facebook-icon.png" alt="Facebook" class="w-6 h-6" />
-          </button>
-          <button class="p-2 bg-gray-700 rounded-full">
-            <img src="google-icon.png" alt="Google" class="w-6 h-6" />
-          </button>
-        </div>
-      </div> -->
+
       <p class="text-center text-sm text-gray-400">
         Already have an account?
-        <a class="text-purple-500" (click)="toggleSignUp()">Log in</a>
+        <a class="text-purple-500 cursor-pointer" (click)="navigateTo('login')"
+          >Log in</a
+        >
       </p>
       } @else {
       <!-- Formulario de Inicio de Sesión -->
       <h2 class="text-2xl font-bold">Welcome Back</h2>
-      <form #form="ngForm" (ngSubmit)="loginUser(form)">
+      <form
+        #form="ngForm"
+        (ngSubmit)="loginUser(form)"
+        class="flex flex-col items-center"
+      >
         <div class="space-y-2">
           <input
             name="email"
@@ -69,16 +64,21 @@
             class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input
-            name="email"
+            name="password"
             ngModel
             type="password"
             placeholder="Password"
             class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
+
+        @if (error()) {
+        <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
+        }
+
         <button
           type="submit"
-          class="w-full mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-md font-semibold"
+          class="w-1/2 mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold"
         >
           Log in
         </button>
@@ -88,7 +88,11 @@
       </a>
       <p class="text-center text-sm text-gray-400">
         Don’t have an account?
-        <a class="text-purple-500" (click)="toggleSignUp()">Sign up</a>
+        <a
+          class="text-purple-500 cursor-pointer"
+          (click)="navigateTo('sign-up')"
+          >Sign up</a
+        >
       </p>
       }
     </div>
