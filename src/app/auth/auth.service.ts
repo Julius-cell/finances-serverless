@@ -7,14 +7,17 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "@angular/fire/auth";
-import { catchError, from, map, Observable, of, tap } from "rxjs";
+
+import { catchError, from, map, mergeMap, Observable, of } from "rxjs";
 import { UserState } from "./auth.interfaces";
+import { UserService } from "../user.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   private auth = inject(Auth);
+  private userService = inject(UserService);
 
   userState = signal<UserState>(this.loadUserState());
 
@@ -35,12 +38,13 @@ export class AuthService {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
     ).pipe(
-      map((userCredential) => {
+      mergeMap(async (userCredential) => {
         this.userState.set({
           success: true,
           data: userCredential.user,
           error: null,
         });
+        await this.userService.saveUser(userCredential, email);
         return { success: true, data: userCredential.user, error: null };
       }),
       catchError((error) => {
