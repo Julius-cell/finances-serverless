@@ -44,7 +44,7 @@ export class AuthService {
           data: userCredential.user,
           error: null,
         });
-        await this.userService.saveUser(userCredential, email);
+        await this.userService.saveUser(userCredential);
         return { success: true, data: userCredential.user, error: null };
       }),
       catchError((error) => {
