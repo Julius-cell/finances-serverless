@@ -1,16 +1,12 @@
 import { Component, inject } from "@angular/core";
-import { AuthService } from "../auth/auth.service";
 import { Router } from "@angular/router";
+
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: "tpl-dashboard",
   imports: [],
-  template: `
-    <div class="flex justify-between">
-      <p>dashboard works!</p>
-      <button (click)="logout()">Log out</button>
-    </div>
-  `,
+  templateUrl: "./dashboard.component.html",
   styles: ``,
 })
 export class DashboardComponent {

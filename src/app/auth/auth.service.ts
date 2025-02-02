@@ -9,8 +9,9 @@ import {
 } from "@angular/fire/auth";
 
 import { catchError, from, map, mergeMap, Observable, of } from "rxjs";
-import { UserState } from "./auth.interfaces";
-import { UserService } from "../user.service";
+
+import { UserState } from "./auth.interface";
+import { UserService } from "../services/user.service";
 
 @Injectable({
   providedIn: "root",
