@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormsModule, NgForm } from "@angular/forms";
 import { AuthService } from "./auth.service";
@@ -9,7 +9,7 @@ import { AuthService } from "./auth.service";
   templateUrl: "./auth.component.html",
   standalone: true,
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent {
   isSignUp = signal(true);
   isRecoveryPass = signal(false);
   error = signal("");
@@ -17,9 +17,12 @@ export class AuthComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
-  ngOnInit() {}
-
   createUser(form: NgForm) {
+    if (form.invalid) {
+      this.error.set("Por favor, completa todos los campos.");
+      return;
+    }
+
     const { email, password } = form.value;
     this.authService.createUser(email, password).subscribe((response) => {
       if (response.success) {
@@ -31,6 +34,11 @@ export class AuthComponent implements OnInit {
   }
 
   loginUser(form: NgForm) {
+    if (form.invalid) {
+      this.error.set("Por favor, completa todos los campos.");
+      return;
+    }
+
     const { email, password } = form.value;
     this.authService.loginUser(email, password).subscribe((response) => {
       if (response.success) {
