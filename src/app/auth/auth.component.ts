@@ -50,13 +50,19 @@ export class AuthComponent {
   }
 
   recoverPassword(form: NgForm) {
+    if (form.invalid) {
+      this.error.set("Por favor, completa todos los campos.");
+      return;
+    }
+
     const { email } = form.value;
-    this.authService.resetPassword(email).subscribe(() => {
-      this.isRecoveryPass.set(false);
+    this.authService.resetPassword(email).subscribe({
+      next: (v) => this.isRecoveryPass.set(false),
     });
   }
 
   navigateTo(route: "login" | "sign-up" | "forgot-password") {
+    this.error.set("");
     switch (route) {
       case "login":
         this.isRecoveryPass.set(false);

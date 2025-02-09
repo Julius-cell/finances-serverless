@@ -87,8 +87,15 @@ export class AuthService {
     );
   }
 
-  resetPassword(email: string): Observable<void> {
-    return from(sendPasswordResetEmail(this.auth, email));
+  resetPassword(email: string): Observable<any> {
+    return from(sendPasswordResetEmail(this.auth, email)).pipe(
+      map(() => {
+        this.userState.set({ success: true, data: null, error: null });
+        return { success: true, data: null, error: null };
+      })
+    );
+    // TODO: Obtain code from user and execute this fn.
+    // await confirmPasswordReset("user@example.com", code);
   }
 
   private getErrorMessageRegister(errorCode: string): string {
@@ -100,7 +107,7 @@ export class AuthService {
       case "auth/weak-password":
         return "The password is too weak.";
       default:
-        return "An unknown error occurred. Please try again.";
+        return "Ha habido un problema. Por favor intenta otra vez.";
     }
   }
 
