@@ -17,7 +17,7 @@ import { UserService } from "../services/user.service";
   providedIn: "root",
 })
 export class AuthService {
-  private auth = inject(Auth);
+  private authFirebase = inject(Auth);
   private userService = inject(UserService);
 
   userState = signal<UserState>(this.loadUserState());
@@ -37,7 +37,7 @@ export class AuthService {
 
   createUser(email: string, password: string): Observable<UserState> {
     return from(
-      createUserWithEmailAndPassword(this.auth, email, password)
+      createUserWithEmailAndPassword(this.authFirebase, email, password)
     ).pipe(
       mergeMap(async (userCredential) => {
         this.userState.set({
@@ -57,7 +57,9 @@ export class AuthService {
   }
 
   loginUser(email: string, password: string): Observable<UserState> {
-    return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
+    return from(
+      signInWithEmailAndPassword(this.authFirebase, email, password)
+    ).pipe(
       map((userCredential) => {
         this.userState.set({
           success: true,
@@ -75,7 +77,7 @@ export class AuthService {
   }
 
   logOutUser(): Observable<UserState> {
-    return from(signOut(this.auth)).pipe(
+    return from(signOut(this.authFirebase)).pipe(
       map(() => {
         this.userState.set({
           success: true,
@@ -88,7 +90,7 @@ export class AuthService {
   }
 
   resetPassword(email: string): Observable<any> {
-    return from(sendPasswordResetEmail(this.auth, email)).pipe(
+    return from(sendPasswordResetEmail(this.authFirebase, email)).pipe(
       map(() => {
         this.userState.set({ success: true, data: null, error: null });
         return { success: true, data: null, error: null };
