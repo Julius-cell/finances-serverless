@@ -90,12 +90,7 @@ export class AuthService {
   }
 
   resetPassword(email: string): Observable<any> {
-    return from(sendPasswordResetEmail(this.authFirebase, email)).pipe(
-      map(() => {
-        this.userState.set({ success: true, data: null, error: null });
-        return { success: true, data: null, error: null };
-      })
-    );
+    return from(sendPasswordResetEmail(this.authFirebase, email));
     // TODO: Obtain code from user and execute this fn.
     // await confirmPasswordReset("user@example.com", code);
   }
