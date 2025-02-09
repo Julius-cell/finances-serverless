@@ -112,6 +112,8 @@ export class AuthService {
     switch (errorMessage) {
       case "MISSING_PASSWORD":
         return "El correo o la contraseña son incorrectos.";
+      case "auth/invalid-credential":
+        return "No existe un usuario con este correo.";
       default:
         return "Ha habido un problema. Por favor intenta otra vez";
     }
