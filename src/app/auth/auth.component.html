@@ -1,145 +1,81 @@
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white"
+  class="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8"
 >
-  <!-- Contenedor Principal -->
-  <div class="w-full max-w-lg p-6 space-y-6">
-    <div class="space-y-4">
-      @if (isSignUp() && !isRecoveryPass()) {
-      <!-- Formulario de Registro -->
-      <h2 class="text-2xl font-bold">Create Account</h2>
-      <form
-        #form="ngForm"
-        (ngSubmit)="createUser(form)"
-        class="flex flex-col items-center"
-      >
-        <div class="space-y-2">
+  <div
+    class="max-w-md w-full space-y-8 p-6 sm:p-8 bg-white rounded-xl shadow-lg"
+  >
+    <div class="text-center">
+      <h2 class="mt-4 sm:mt-6 text-2xl sm:text-3xl font-bold text-gray-900">
+        {{ isLogin() ? "Welcome back" : "Create an account" }}
+      </h2>
+      <p class="mt-2 text-sm sm:text-base text-gray-600">
+        {{
+          isLogin()
+            ? "Please sign in to your account"
+            : "Get started with your free account"
+        }}
+      </p>
+    </div>
+
+    <form
+      #form="ngForm"
+      class="mt-6 sm:mt-8 space-y-4 sm:space-y-6"
+      (submit)="handleSubmit(form)"
+    >
+      <div class="space-y-4">
+        <div>
+          <label for="email" class="sr-only">Email address</label>
           <input
-            name="email"
-            ngModel
-            required
+            id="email"
             type="email"
-            placeholder="Email"
-            class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <input
-            name="password"
+            placeholder="Email address"
             ngModel
+            name="email"
             required
-            type="password"
-            placeholder="Password"
-            class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-base"
           />
         </div>
-
-        @if (error()) {
-        <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
-        }
-
-        <button
-          type="submit"
-          class="w-1/2 mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold"
-        >
-          Sign up
-        </button>
-      </form>
-
-      <p class="text-center text-sm text-gray-400">
-        Already have an account?
-        <a class="text-purple-500 cursor-pointer" (click)="navigateTo('login')"
-          >Log in</a
-        >
-      </p>
-      } @else if (!isSignUp() && !isRecoveryPass()) {
-      <!-- Formulario de Inicio de Sesión -->
-      <h2 class="text-2xl font-bold">Welcome Back</h2>
-      <form
-        #form="ngForm"
-        (ngSubmit)="loginUser(form)"
-        class="flex flex-col items-center"
-      >
-        <div class="space-y-2">
+        <div>
+          <label for="password" class="sr-only">Password</label>
           <input
-            name="email"
-            ngModel
-            required
-            type="email"
-            placeholder="Email"
-            class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <input
-            name="password"
-            ngModel
-            required
+            id="password"
             type="password"
             placeholder="Password"
-            class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            ngModel
+            name="password"
+            required
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-base"
           />
         </div>
+      </div>
 
-        @if (error()) {
-        <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
-        }
-
-        <button
-          type="submit"
-          class="w-1/2 mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold"
-        >
-          Log in
-        </button>
-      </form>
-      <!-- <a
-        class="text-sm text-purple-500 block text-center cursor-pointer"
-        (click)="navigateTo('forgot-password')"
-      >
-        Forgot Password?
-      </a> -->
-      <p class="text-center text-sm text-gray-400">
-        Don’t have an account?
-        <a
-          class="text-purple-500 cursor-pointer"
-          (click)="navigateTo('sign-up')"
-          >Sign up</a
-        >
-      </p>
-      } @else if (isRecoveryPass()) {
-      <!-- Formulario de Recuperación de Contraseña -->
-      <h2 class="text-2xl font-bold">Forgot Password</h2>
-      <form
-        #form="ngForm"
-        (ngSubmit)="recoverPassword(form)"
-        class="flex flex-col items-center"
-      >
-        <input
-          name="email"
-          ngModel
-          required
-          type="email"
-          placeholder="Email"
-          class="w-full p-3 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-
-        @if (error()) {
-        <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
-        }
-
-        <button
-          type="submit"
-          class="w-1/2 mt-4 p-3 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold"
-        >
-          Send Email
-        </button>
-
-        <p class="text-center text-sm text-gray-400 mt-2">
-          Remember your password?
-          <a
-            class="text-purple-500 cursor-pointer"
-            (click)="navigateTo('login')"
-            >Log in</a
-          >
-        </p>
-      </form>
-
+      @if (error()) {
+      <p class="text-red-500 text-center text-sm mt-1">{{ error() }}</p>
       }
+
+      <div>
+        <button
+          type="submit"
+          class="group relative w-full flex justify-center items-center gap-2 py-2 sm:py-3 text-sm sm:text-base transition-all duration-200 hover:scale-[1.02] bg-blue-500 text-white rounded-md"
+        >
+          <fa-icon [icon]="isLogin() ? faSignInAlt : faUserPlus"></fa-icon>
+          {{ isLogin() ? "Sign in" : "Sign up" }}
+        </button>
+      </div>
+    </form>
+
+    <div class="text-center">
+      <button
+        (click)="toggleAuthMode()"
+        class="text-sm sm:text-base text-primary hover:text-primary/80 flex items-center gap-2 mx-auto transition-colors"
+      >
+        <fa-icon [icon]="faKey"></fa-icon>
+        {{
+          isLogin()
+            ? "Don't have an account? Sign up"
+            : "Already have an account? Sign in"
+        }}
+      </button>
     </div>
   </div>
 </div>

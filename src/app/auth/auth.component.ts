@@ -1,28 +1,49 @@
 import { Component, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormsModule, NgForm } from "@angular/forms";
+
 import { AuthService } from "./auth.service";
+
+import {
+  faKey,
+  faUserPlus,
+  faSignInAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: "tpl-auth",
-  imports: [FormsModule],
+  imports: [FormsModule, FontAwesomeModule],
   templateUrl: "./auth.component.html",
   standalone: true,
 })
 export class AuthComponent {
-  isSignUp = signal(true);
-  isRecoveryPass = signal(false);
+  isLogin = signal(true);
   error = signal("");
+
+  isRecoveryPass = signal(false);
+
+  faKey = faKey;
+  faUserPlus = faUserPlus;
+  faSignInAlt = faSignInAlt;
 
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
-  createUser(form: NgForm) {
+  handleSubmit(form: NgForm) {
     if (form.invalid) {
       this.error.set("Por favor, completa todos los campos.");
       return;
     }
 
+    if (this.isLogin()) {
+      this.loginUser(form);
+      return;
+    }
+    this.createUser(form);
+  }
+
+  createUser(form: NgForm) {
     const { email, password } = form.value;
     this.authService.createUser(email, password).subscribe((response) => {
       if (response.success) {
@@ -34,11 +55,6 @@ export class AuthComponent {
   }
 
   loginUser(form: NgForm) {
-    if (form.invalid) {
-      this.error.set("Por favor, completa todos los campos.");
-      return;
-    }
-
     const { email, password } = form.value;
     this.authService.loginUser(email, password).subscribe((response) => {
       if (response.success) {
@@ -61,19 +77,7 @@ export class AuthComponent {
     });
   }
 
-  navigateTo(route: "login" | "sign-up" | "forgot-password") {
-    this.error.set("");
-    switch (route) {
-      case "login":
-        this.isRecoveryPass.set(false);
-        this.isSignUp.set(false);
-        break;
-      case "sign-up":
-        this.isSignUp.set(true);
-        break;
-      case "forgot-password":
-        this.isRecoveryPass.set(true);
-        break;
-    }
+  toggleAuthMode(): void {
+    this.isLogin.set(!this.isLogin());
   }
 }
