@@ -1,20 +1,25 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { AuthService } from "../auth/auth.service";
 
+import { HeaderComponent } from "../header/header.component";
+
 @Component({
   selector: "tpl-dashboard",
-  imports: [],
+  standalone: true,
+  imports: [HeaderComponent],
   templateUrl: "./dashboard.component.html",
-  styles: ``,
+  styles: [``],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private readonly router = inject(Router);
-  private readonly auth = inject(AuthService);
+  private readonly authService = inject(AuthService);
+
+  ngOnInit(): void {}
 
   logout() {
-    this.auth.logOutUser().subscribe((response) => {
+    this.authService.logOutUser().subscribe((response) => {
       if (response.success) {
         this.router.navigate(["/login"]);
       }
