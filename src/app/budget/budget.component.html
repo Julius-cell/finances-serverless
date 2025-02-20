@@ -2,3 +2,13 @@
   <fa-icon [icon]="faChartPie"></fa-icon>
   <h2 class="text-xl font-semibold">Budget Distribution</h2>
 </div>
+
+<div style="display: flex; justify-content: center">
+  <canvas
+    baseChart
+    [data]="pieChartData"
+    [options]="pieChartOptions"
+    [type]="'pie'"
+  >
+  </canvas>
+</div>
