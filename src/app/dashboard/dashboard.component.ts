@@ -5,11 +5,12 @@ import { AuthService } from "../auth/auth.service";
 
 import { HeaderComponent } from "../header/header.component";
 import { ResumeComponent } from "../resume/resume.component";
+import { BudgetComponent } from "../budget/budget.component";
 
 @Component({
   selector: "tpl-dashboard",
   standalone: true,
-  imports: [HeaderComponent, ResumeComponent],
+  imports: [HeaderComponent, ResumeComponent, BudgetComponent],
   templateUrl: "./dashboard.component.html",
   styles: [``],
 })
