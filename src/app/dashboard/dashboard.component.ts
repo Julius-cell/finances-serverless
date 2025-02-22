@@ -6,11 +6,17 @@ import { AuthService } from "../auth/auth.service";
 import { HeaderComponent } from "../header/header.component";
 import { ResumeComponent } from "../resume/resume.component";
 import { BudgetComponent } from "../budget/budget.component";
+import { ExpensesComponent } from "../expenses/expenses.component";
 
 @Component({
   selector: "tpl-dashboard",
   standalone: true,
-  imports: [HeaderComponent, ResumeComponent, BudgetComponent],
+  imports: [
+    HeaderComponent,
+    ResumeComponent,
+    BudgetComponent,
+    ExpensesComponent,
+  ],
   templateUrl: "./dashboard.component.html",
   styles: [``],
 })
