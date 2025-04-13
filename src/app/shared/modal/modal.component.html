@@ -1,0 +1,31 @@
+@if (isOpen$ | async) {
+    <div class="modal-overlay">
+    <!-- <div class="modal-overlay"> -->
+        <div class="modal-content border rounded-lg p-5" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+            <h2 class="text-lg font-bold">{{ (modalData$ | async)?.title }}</h2>
+            <button (click)="onClose()">
+                <fa-icon [icon]="faClose" class="h-4 w-4"></fa-icon>
+            </button>
+            </div>
+            <div class="modal-body">
+            @switch ((modalData$ | async)?.type) {
+                @case (ModalType.NEW_TRANSACTION) {
+                    <p>New Transaction</p>
+                    <!-- <app-new-transaction-form 
+                        [data]="(modalData$ | async)?.data"
+                        (close)="onClose()">
+                    </app-new-transaction-form> -->
+                }
+                @case (ModalType.PAY_TRANSACTION) {
+                    <p>Pay Transaction</p>
+                    <!-- <app-pay-transaction-form 
+                        [data]="(modalData$ | async)?.data"
+                        (close)="onClose()">
+                    </app-pay-transaction-form> -->
+                }
+            }
+            </div>
+        </div>
+    </div>
+}
