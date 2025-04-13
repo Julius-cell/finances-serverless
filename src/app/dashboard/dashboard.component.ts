@@ -7,7 +7,7 @@ import { HeaderComponent } from "../header/header.component";
 import { ResumeComponent } from "../resume/resume.component";
 import { BudgetComponent } from "../budget/budget.component";
 import { ExpensesComponent } from "../expenses/expenses.component";
-
+import { ModalComponent } from "../shared/modal/modal.component";
 @Component({
   selector: "tpl-dashboard",
   standalone: true,
@@ -16,6 +16,7 @@ import { ExpensesComponent } from "../expenses/expenses.component";
     ResumeComponent,
     BudgetComponent,
     ExpensesComponent,
+    ModalComponent,
   ],
   templateUrl: "./dashboard.component.html",
   styles: [``],

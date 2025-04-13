@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 
 import {
   faUser,
@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ModalService } from "../shared/modal/modal.service";
 
 @Component({
   selector: "or-header",
@@ -25,20 +26,24 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 export class HeaderComponent {
   isPopoverOpen = signal(false);
 
+  private modalService = inject(ModalService);
+
   faUser = faUser;
   faPlus = faPlus;
   faDollarSign = faDollarSign;
   faCreditCard = faCreditCard;
 
   togglePopover() {
-    this.isPopoverOpen.set(!this.isPopoverOpen());
+    this.isPopoverOpen.set(true);
   }
 
   addTransaction() {
-    console.log("Add transaction clicked");
+    this.isPopoverOpen.set(false);
+    this.modalService.openNewTransaction();
   }
 
   payTransaction() {
-    console.log("Pay transaction clicked");
+    this.isPopoverOpen.set(false);
+    this.modalService.openPayTransaction();
   }
 }
