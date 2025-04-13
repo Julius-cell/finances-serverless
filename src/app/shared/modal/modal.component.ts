@@ -31,6 +31,10 @@ import { ModalType } from './modal.types';
       justify-content: space-between;
       align-items: center;
     }
+
+    .modal-description {
+      color: #64748b;
+    }
   `,
 })
 export class ModalComponent {

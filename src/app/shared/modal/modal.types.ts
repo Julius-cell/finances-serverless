@@ -6,4 +6,5 @@ export enum ModalType {
 export interface ModalData {
   type: ModalType;
   title: string;
+  description: string;
 }

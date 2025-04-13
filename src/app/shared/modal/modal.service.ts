@@ -16,6 +16,7 @@ export class ModalService {
     this.modalDataSubject.next({
       type: ModalType.NEW_TRANSACTION,
       title: 'New Transaction',
+      description: 'Enter the details of the new transaction.',
     });
     this.isModalOpenSubject.next(true);
   }
@@ -24,6 +25,7 @@ export class ModalService {
     this.modalDataSubject.next({
       type: ModalType.PAY_TRANSACTION,
       title: 'Pay Transaction',
+      description: 'Choose a pending transaction from the list below to process the payment.',
     });
     this.isModalOpenSubject.next(true);
   }
