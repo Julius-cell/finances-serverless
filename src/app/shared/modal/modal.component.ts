@@ -1,4 +1,4 @@
-import { Component, input, output, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { ModalService } from "./modal.service";
