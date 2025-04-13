@@ -4,7 +4,7 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { ModalService } from "./modal.service";
 import { AsyncPipe } from '@angular/common';
 import { ModalType } from './modal.types';
-import { TransactionFormComponent } from '../transaction-form/transaction-form.component';
+import { TransactionFormComponent } from './transaction-form/transaction-form.component';
 
 @Component({
   selector: "app-modal",
