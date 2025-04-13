@@ -18,12 +18,15 @@
     </div>
     <div class="modal-body">
       @switch ((modalData$ | async)?.type) { @case (ModalType.NEW_TRANSACTION) {
-      <app-transaction-form
+      <modal-transaction-form
         (onSubmit)="onTransactionSubmit($event)"
         (onCancel)="onClose()"
-      ></app-transaction-form>
+      ></modal-transaction-form>
       } @case (ModalType.PAY_TRANSACTION) {
-      <p>Pay Transaction</p>
+      <modal-payment-table
+        [transactions]="transactionsToPay"
+        (onPay)="onPayTransaction($event)"
+      ></modal-payment-table>
       } }
     </div>
   </div>

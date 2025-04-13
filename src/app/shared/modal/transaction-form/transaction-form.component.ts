@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 export type TransactionType = 'Expense' | 'Income';
 
 @Component({
-  selector: 'app-transaction-form',
+  selector: 'modal-transaction-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './transaction-form.component.html',
