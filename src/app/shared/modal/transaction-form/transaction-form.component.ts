@@ -1,8 +1,17 @@
 import { Component, inject, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TransactionService } from '../../../services/transaction.service';
 
 export type TransactionType = 'Expense' | 'Income';
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  amount: number;
+  name: string;
+  category: string;
+  date: string;
+}
 
 @Component({
   selector: 'modal-transaction-form',
@@ -12,23 +21,21 @@ export type TransactionType = 'Expense' | 'Income';
 })
 export class TransactionFormComponent {
   private fb = inject(FormBuilder);
+  private transactionService = inject(TransactionService);
 
   form: FormGroup = this.fb.group({
-    type: ['Expense', Validators.required],
-    amount: [null, [Validators.required, Validators.min(0)]],
-    category: ['', Validators.required],
+    type: this.fb.control<TransactionType>('Expense', Validators.required),
+    name: this.fb.control<string>('', Validators.required),
+    category: this.fb.control<string>('', Validators.required),
+    amount: this.fb.control<number>(0, [Validators.required, Validators.min(0)]),
   });
 
-  onSubmit = output<{
-    type: TransactionType;
-    amount: number;
-    category: string;
-  }>();
-
+  onSubmit = output<Transaction>();
   onCancel = output<void>();
 
-  handleSubmit(): void {
+  async handleSubmit(): Promise<void> {
     if (this.form.valid) {
+      await this.transactionService.saveTransaction(this.form.value);
       this.onSubmit.emit(this.form.value);
     }
   }
