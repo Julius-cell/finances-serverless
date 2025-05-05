@@ -1,6 +1,5 @@
 @if (isOpen$ | async) {
 <div class="modal-overlay">
-  <!-- <div class="modal-overlay"> -->
   <div
     class="modal-content border rounded-lg p-5"
     (click)="$event.stopPropagation()"
@@ -18,13 +17,12 @@
     </div>
     <div class="modal-body">
       @switch ((modalData$ | async)?.type) { @case (ModalType.NEW_TRANSACTION) {
-      <modal-transaction-form
-        (onSubmit)="onTransactionSubmit($event)"
+      <transaction-form
+        (onSubmit)="onTransactionSubmit()"
         (onCancel)="onClose()"
-      ></modal-transaction-form>
+      ></transaction-form>
       } @case (ModalType.PAY_TRANSACTION) {
       <modal-payment-table
-        [transactions]="transactionsToPay"
         (onPay)="onPayTransaction($event)"
       ></modal-payment-table>
       } }

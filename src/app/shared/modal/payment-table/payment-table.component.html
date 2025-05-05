@@ -26,7 +26,7 @@
       @for (transaction of transactions(); track transaction.id) {
       <tr>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ transaction.description }}
+          {{ transaction.name }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
           {{ transaction.amount | number : "1.0-0" }}

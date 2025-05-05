@@ -1,19 +1,24 @@
-import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-export interface PaymentTransaction {
-  id: string;
-  description: string;
-  amount: number;
-}
+import { Component, inject, output, signal } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { TransactionService } from "../../../services/transaction.service";
+import { Transaction } from "../transaction-form/transaction-form.component";
 
 @Component({
-  selector: 'modal-payment-table',
+  selector: "modal-payment-table",
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './payment-table.component.html',
+  templateUrl: "./payment-table.component.html",
 })
 export class PaymentTableComponent {
-  transactions = input.required<PaymentTransaction[]>();
-  onPay = output<PaymentTransaction>();
-} 
+  private transactionService = inject(TransactionService);
+
+  transactions = signal<Transaction[]>([]);
+
+  constructor() {
+    this.transactionService.getExpenses().then((transactions) => {
+      this.transactions().push(...transactions);
+    });
+  }
+
+  onPay = output<Transaction>();
+}
