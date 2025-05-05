@@ -4,6 +4,7 @@ import {
   Firestore,
   collection,
   doc,
+  getDoc,
   getDocs,
   setDoc,
 } from "@angular/fire/firestore";
@@ -21,7 +22,7 @@ export class CategoryService {
   private firestore = inject(Firestore);
   private userCredential = inject(AuthService).userState();
 
-  async saveCategory(category: Category): Promise<void> {
+  async saveCategory(category: Category): Promise<Category> {
     const categoryDate = new Date();
     const categoryId = `${categoryDate.getTime()}`;
     const categoryRef = doc(
@@ -29,12 +30,17 @@ export class CategoryService {
       `users/${this.userCredential.data?.uid}/categories/${categoryId}`
     );
 
-    return await setDoc(categoryRef, {
+    await setDoc(categoryRef, {
       categoryId,
       name: category.name,
       userId: this.userCredential.data?.uid,
       createdAt: categoryDate,
     });
+
+    return {
+      id: categoryId,
+      name: category.name,
+    };
   }
 
   async getCategories(): Promise<Category[]> {
@@ -45,7 +51,7 @@ export class CategoryService {
 
     const querySnapshot = await getDocs(categoriesCollection);
 
-    const categories = querySnapshot.docs.map(doc => ({
+    const categories = querySnapshot.docs.map((doc) => ({
       name: doc.data()["name"],
       id: doc.id,
     }));
