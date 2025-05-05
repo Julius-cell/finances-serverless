@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from "@angular/core";
+import { Component, inject, output, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faAngleDown, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -19,12 +19,12 @@ export class CategorySelectComponent {
 
   selected = signal<Category | null>(null);
   isOpen = signal(false);
+  options = signal<Category[]>([]);
+  
+  onSelectedCategory = output<Category>();
 
   faAngleDown = faAngleDown;
   faPlus = faPlus;
-
-  options = input<Category[]>([]);
-  selectedChange = output<Category>();
 
   categoryForm = this.fb.group({
     newCategory: this.fb.control<string>(""),
@@ -54,7 +54,7 @@ export class CategorySelectComponent {
 
   select(option: Category) {
     this.selected.set(option);
-    this.selectedChange.emit(option);
+    this.onSelectedCategory.emit(option);
     this.close();
   }
 
