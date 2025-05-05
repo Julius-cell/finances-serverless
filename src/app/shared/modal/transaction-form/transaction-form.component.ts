@@ -13,6 +13,12 @@ export interface Transaction {
   name: string;
   category: string;
   date: string;
+  status: TransactionStatus;
+}
+
+export enum TransactionStatus {
+  Pending = 'pending',
+  Paid = 'paid',
 }
 
 @Component({
