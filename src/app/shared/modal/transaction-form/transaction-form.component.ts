@@ -5,7 +5,7 @@ import { TransactionService } from '../../../services/transaction.service';
 import { CategorySelectComponent } from './category-select/category-select.component';
 import { Category } from '../../../services/category.service';
 
-export type TransactionType = 'Expense' | 'Income';
+export type TransactionType = 'expense' | 'income';
 export interface Transaction {
   id: string;
   type: TransactionType;
@@ -32,7 +32,7 @@ export class TransactionFormComponent {
   private transactionService = inject(TransactionService);
 
   form: FormGroup = this.fb.group({
-    type: this.fb.control<TransactionType>('Expense', Validators.required),
+    type: this.fb.control<TransactionType>('expense', Validators.required),
     name: this.fb.control<Category | undefined>(undefined, Validators.required),
     category: this.fb.control<string>('', Validators.required),
     amount: this.fb.control<number>(0, [Validators.required, Validators.min(0)]),
@@ -43,7 +43,7 @@ export class TransactionFormComponent {
 
   async handleSubmit(): Promise<void> {
     if (this.form.valid) {
-      await this.transactionService.saveTransaction(this.form.value);
+      await this.transactionService.saveExpense(this.form.value);
       this.onSubmit.emit(this.form.value);
     }
   }

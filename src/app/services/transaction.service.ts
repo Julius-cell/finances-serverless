@@ -19,25 +19,42 @@ export class TransactionService {
   private firestore = inject(Firestore);
   private userId = inject(AuthService).userState().data?.uid;
 
-  async saveTransaction(transaction: Transaction): Promise<void> {
+  async saveIncome(transaction: Transaction): Promise<void> {
     const transactionDate = new Date();
     const yearMonth = `${transactionDate.getFullYear()}-${String(
       transactionDate.getMonth() + 1
     ).padStart(2, "0")}`;
 
-    const subcollection =
-      transaction.type === "Income" ? "incomes" : "expenses";
+    const transactionId = `${transactionDate.getTime()}`;
+
+    const transactionRef = doc(
+      this.firestore,
+      `users/${this.userId}/finances/${yearMonth}/incomes/${transactionId}`
+    );
+
+    return await setDoc(transactionRef, {
+      ...transaction,
+      userId: this.userId,
+      createdAt: transactionDate,
+    });
+  }
+
+  async saveExpense(transaction: Transaction): Promise<void> {
+    const transactionDate = new Date();
+    const yearMonth = `${transactionDate.getFullYear()}-${String(
+      transactionDate.getMonth() + 1
+    ).padStart(2, "0")}`;
 
     const transactionId = `${transactionDate.getTime()}`;
 
     const transactionRef = doc(
       this.firestore,
-      `users/${this.userId}/finances/${yearMonth}/${subcollection}/${transactionId}`
+      `users/${this.userId}/finances/${yearMonth}/expenses/${transactionId}`
     );
 
     return await setDoc(transactionRef, {
       ...transaction,
-      status: transaction.status || TransactionStatus.Pending,
+      status: TransactionStatus.Pending,
       userId: this.userId,
       createdAt: transactionDate,
     });
