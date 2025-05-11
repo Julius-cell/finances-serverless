@@ -1,0 +1,13 @@
+<div class="relative" #container>
+  <div class="flex gap-2 items-center" (click)="toggleSelector()">
+    <h2>{{ monthYear() }}</h2>
+    <fa-icon [icon]="faAngleDown"></fa-icon>
+  </div>
+  @if (isSelectorOpen()) {
+  <div class="calendar-grid p-2">
+    @for (month of monthsLabels; let i = $index; track i) {
+    <button class="py-2 px-4" (click)="setMonth(i + 1)">{{ month }}</button>
+    }
+  </div>
+  }
+</div>
