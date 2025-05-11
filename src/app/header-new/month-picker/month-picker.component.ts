@@ -21,6 +21,10 @@ export interface MonthYear {
   imports: [FontAwesomeModule],
   styles: [
     `
+      :host {
+        align-self: center;
+      }
+
       .calendar-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -36,7 +40,7 @@ export class MonthPickerComponent {
 
   isSelectorOpen = signal(false);
   month = signal<string | undefined>(undefined);
-  
+
   monthYear = computed(() => {
     const date = new Date();
     const year = date.getFullYear();
