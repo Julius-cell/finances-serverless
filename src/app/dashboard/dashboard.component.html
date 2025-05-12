@@ -1,12 +1,12 @@
-<div class="bg-slate-100 p-8">
-  <or-header></or-header>
-  <or-resume></or-resume>
-  <or-budget></or-budget>
-  <or-expenses></or-expenses>
-  <div class="flex justify-between">
-    <p>dashboard works!</p>
-    <button (click)="logout()">Log out</button>
-  </div>
+<div class="flex flex-col bg-slate-100 p-5 h-screen gap-6">
+  <!-- <or-header></or-header> -->
+  <or-header-new></or-header-new>
+  <or-incomes></or-incomes>
+  <or-expenses-new></or-expenses-new>
+  <!-- <or-resume></or-resume> -->
+  <!-- <or-budget></or-budget> -->
+  <!-- <or-expenses></or-expenses> -->
+  <button (click)="logout()">Log out</button>
 </div>
 
 <app-modal></app-modal>

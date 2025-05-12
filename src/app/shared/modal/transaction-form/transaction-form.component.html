@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-4">
-  <div>
+  <!-- <div>
     <label for="type" class="block text-sm font-medium text-gray-700"
       >Type</label
     >
@@ -11,7 +11,7 @@
       <option value="expense">Expense</option>
       <option value="income">Income</option>
     </select>
-  </div>
+  </div> -->
 
   <div>
     <label for="name" class="block text-sm font-medium text-gray-700"
@@ -26,9 +26,13 @@
     />
   </div>
 
+  @if (type() === ModalType.EXPENSE) {
   <div>
-    <app-category-select (onSelectedCategory)="handleSelectedCategory($event)"></app-category-select>
+    <app-category-select
+      (onSelectedCategory)="handleSelectedCategory($event)"
+    ></app-category-select>
   </div>
+  }
 
   <div>
     <label for="amount" class="block text-sm font-medium text-gray-700"

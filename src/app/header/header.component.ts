@@ -39,7 +39,7 @@ export class HeaderComponent {
 
   addTransaction() {
     this.isPopoverOpen.set(false);
-    this.modalService.openNewTransaction();
+    // this.modalService.openNewTransaction();
   }
 
   payTransaction() {

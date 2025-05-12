@@ -12,11 +12,20 @@ export class ModalService {
   isOpen$ = this.isModalOpenSubject.asObservable();
   modalData$ = this.modalDataSubject.asObservable();
 
-  openNewTransaction(): void {
+  openNewIncome(): void {
     this.modalDataSubject.next({
-      type: ModalType.NEW_TRANSACTION,
-      title: 'New Transaction',
-      description: 'Enter the details of the new transaction.',
+      type: ModalType.INCOME,
+      title: 'New Income',
+      description: 'Enter the details of the new Income.',
+    });
+    this.isModalOpenSubject.next(true);
+  }
+
+  openNewExpense(): void {
+    this.modalDataSubject.next({
+      type: ModalType.EXPENSE,
+      title: 'New Expense',
+      description: 'Enter the details of the new Expense.',
     });
     this.isModalOpenSubject.next(true);
   }

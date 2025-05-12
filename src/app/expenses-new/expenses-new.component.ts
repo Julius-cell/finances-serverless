@@ -35,6 +35,6 @@ export class ExpensesNewComponent {
   ];
 
   addExpense() {
-    this.modalService.openNewTransaction();
+    this.modalService.openNewExpense();
   }
 }

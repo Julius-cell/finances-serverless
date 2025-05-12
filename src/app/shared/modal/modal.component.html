@@ -15,16 +15,17 @@
         {{ (modalData$ | async)?.description }}
       </p>
     </div>
-    <div class="modal-body">
-      @switch ((modalData$ | async)?.type) { @case (ModalType.NEW_TRANSACTION) {
-      <transaction-form
-        (onSubmit)="onTransactionSubmit()"
-        (onCancel)="onClose()"
-      ></transaction-form>
-      } @case (ModalType.PAY_TRANSACTION) {
+    <div class="mt-4">
+      @switch ((modalData$ | async)?.type) { @case (ModalType.PAY_TRANSACTION) {
       <modal-payment-table
         (onPay)="onPayTransaction($event)"
       ></modal-payment-table>
+      } @default {
+      <transaction-form
+        [type]="(modalData$ | async)?.type!"
+        (onSubmit)="onTransactionSubmit()"
+        (onCancel)="onClose()"
+      ></transaction-form>
       } }
     </div>
   </div>

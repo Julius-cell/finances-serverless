@@ -1,9 +1,10 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../../services/transaction.service';
 import { CategorySelectComponent } from './category-select/category-select.component';
 import { Category } from '../../../services/category.service';
+import { ModalType } from '../modal.types';
 
 export type TransactionType = 'expense' | 'income';
 export interface Transaction {
@@ -28,6 +29,8 @@ export enum TransactionStatus {
   templateUrl: './transaction-form.component.html',
 })
 export class TransactionFormComponent {
+  type = input.required<ModalType>();
+
   private fb = inject(FormBuilder);
   private transactionService = inject(TransactionService);
 
@@ -40,6 +43,8 @@ export class TransactionFormComponent {
 
   onSubmit = output<Transaction>();
   onCancel = output<void>();
+
+  ModalType = ModalType;
 
   async handleSubmit(): Promise<void> {
     if (this.form.valid) {
