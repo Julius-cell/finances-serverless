@@ -2,3 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.box-container {
+  @apply p-2 rounded-md shadow-box bg-white;
+}
+
+h3 {
+  @apply font-bold;
+}
+
+button {
+  @apply bg-blue-400 text-white font-bold py-1 px-3 rounded;
+}
