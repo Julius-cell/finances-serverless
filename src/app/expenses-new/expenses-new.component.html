@@ -1,0 +1,23 @@
+<div class="box-container w-full">
+  <div class="flex justify-between items-center">
+    <h3>Expenses</h3>
+    <button (click)="addExpense()">+ Add</button>
+  </div>
+
+  <div class="mt-3 space-y-2">
+    @for (expense of expenses; track $index) {
+    <div class="flex flex-col">
+      <div class="flex justify-between items-center">
+        <p>{{ expense.name }}</p>
+        <p>{{ expense.amount }}</p>
+      </div>
+      <div
+        class="flex justify-between items-center text-xs italic text-slate-500"
+      >
+        <p>{{ expense.category }}</p>
+        <p>{{ expense.status }}</p>
+      </div>
+    </div>
+    }
+  </div>
+</div>
