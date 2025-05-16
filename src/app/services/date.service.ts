@@ -19,6 +19,10 @@ export class DateService {
     this.date.next(`${month}-${year}`);
   }
 
+  getDate(): string {
+    return this.date.getValue();
+  }
+
   setMonth(month: number): void {
     const date = new Date();
     const year = date.getFullYear();

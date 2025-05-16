@@ -11,6 +11,7 @@ import {
   TransactionStatus,
 } from "../shared/modal/transaction-form/transaction-form.component";
 import { AuthService } from "../auth/auth.service";
+import { DateService } from "./date.service";
 
 @Injectable({
   providedIn: "root",
@@ -18,18 +19,15 @@ import { AuthService } from "../auth/auth.service";
 export class TransactionService {
   private firestore = inject(Firestore);
   private userId = inject(AuthService).userState().data?.uid;
+  private date = inject(DateService).getDate();
 
   async saveIncome(transaction: Transaction): Promise<void> {
     const transactionDate = new Date();
-    const yearMonth = `${transactionDate.getFullYear()}-${String(
-      transactionDate.getMonth() + 1
-    ).padStart(2, "0")}`;
-
     const transactionId = `${transactionDate.getTime()}`;
 
     const transactionRef = doc(
       this.firestore,
-      `users/${this.userId}/finances/${yearMonth}/incomes/${transactionId}`
+      `users/${this.userId}/finances/${this.date}/incomes/${transactionId}`
     );
 
     return await setDoc(transactionRef, {
@@ -41,15 +39,11 @@ export class TransactionService {
 
   async saveExpense(transaction: Transaction): Promise<void> {
     const transactionDate = new Date();
-    const yearMonth = `${transactionDate.getFullYear()}-${String(
-      transactionDate.getMonth() + 1
-    ).padStart(2, "0")}`;
-
     const transactionId = `${transactionDate.getTime()}`;
 
     const transactionRef = doc(
       this.firestore,
-      `users/${this.userId}/finances/${yearMonth}/expenses/${transactionId}`
+      `users/${this.userId}/finances/${this.date}/expenses/${transactionId}`
     );
 
     return await setDoc(transactionRef, {
@@ -61,14 +55,9 @@ export class TransactionService {
   }
 
   async getExpenses(): Promise<Transaction[]> {
-    const userId = this.userId;
-    const yearMonth = `${new Date().getFullYear()}-${String(
-      new Date().getMonth() + 1
-    ).padStart(2, "0")}`;
-
     const expensesCollection = collection(
       this.firestore,
-      `users/${userId}/finances/${yearMonth}/expenses`
+      `users/${this.userId}/finances/${this.date}/expenses`
     );
 
     const expensesSnapshot = await getDocs(expensesCollection);
@@ -80,7 +69,7 @@ export class TransactionService {
         name: doc.data()["name"],
         type: doc.data()["type"],
         status: doc.data()["status"],
-        date: yearMonth,
+        date: this.date,
       };
     });
 
