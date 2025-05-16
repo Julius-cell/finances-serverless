@@ -1,6 +1,6 @@
 <div class="relative" #container>
   <div class="flex gap-2 items-center" (click)="toggleSelector()">
-    <h2>{{ monthYear() }}</h2>
+    <h2>{{ monthYear$ | async }}</h2>
     <fa-icon [icon]="faAngleDown"></fa-icon>
   </div>
   @if (isSelectorOpen()) {

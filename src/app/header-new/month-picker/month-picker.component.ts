@@ -1,24 +1,22 @@
 import {
   Component,
-  computed,
   ElementRef,
   HostListener,
+  inject,
   signal,
   ViewChild,
 } from "@angular/core";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { DateService } from "../../services/date.service";
+import { AsyncPipe } from "@angular/common";
 
-export interface MonthYear {
-  month: number;
-  year?: number;
-}
 
 @Component({
   selector: "app-month-picker",
   templateUrl: "./month-picker.component.html",
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, AsyncPipe],
   styles: [
     `
       :host {
@@ -37,15 +35,12 @@ export interface MonthYear {
 })
 export class MonthPickerComponent {
   @ViewChild("container") containerRef!: ElementRef;
+  private dateService = inject(DateService);
+
+  monthYear$ = this.dateService.date$;
 
   isSelectorOpen = signal(false);
   month = signal<string | undefined>(undefined);
-
-  monthYear = computed(() => {
-    const date = new Date();
-    const year = date.getFullYear();
-    return `${this.month()}/${year}`;
-  });
 
   faAngleDown = faAngleDown;
 
@@ -64,24 +59,14 @@ export class MonthPickerComponent {
     "Dec",
   ];
 
-  constructor() {
-    this.setMonth();
-  }
+  constructor() {}
 
   toggleSelector() {
     this.isSelectorOpen.set(!this.isSelectorOpen());
   }
 
-  setMonth(month?: number): void {
-    if (month) {
-      this.month.set(month.toString().padStart(2, "0"));
-      this.isSelectorOpen.set(false);
-      return;
-    }
-    const date = new Date();
-    const actualMonth = (date.getMonth() + 1).toString().padStart(2, "0");
-    this.month.set(actualMonth);
-    this.isSelectorOpen.set(false);
+  setMonth(month: number): void {
+    this.dateService.setMonth(month);
   }
 
   @HostListener("document:click", ["$event.target"])
