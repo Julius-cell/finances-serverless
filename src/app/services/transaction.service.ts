@@ -12,6 +12,7 @@ import {
 } from "../shared/modal/transaction-form/transaction-form.component";
 import { AuthService } from "../auth/auth.service";
 import { DateService } from "./date.service";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -20,6 +21,9 @@ export class TransactionService {
   private firestore = inject(Firestore);
   private userId = inject(AuthService).userState().data?.uid;
   private date = inject(DateService).getDate();
+
+  private expenses = new BehaviorSubject<Transaction[]>([]);
+  expenses$ = this.expenses.asObservable();
 
   async saveIncome(transaction: Transaction): Promise<void> {
     const transactionDate = new Date();
@@ -46,11 +50,24 @@ export class TransactionService {
       `users/${this.userId}/finances/${this.date}/expenses/${transactionId}`
     );
 
-    return await setDoc(transactionRef, {
+    const newTransaction = {
       ...transaction,
       status: TransactionStatus.Pending,
-      userId: this.userId,
       createdAt: transactionDate,
+    };
+
+    this.expenses.next([
+      ...this.expenses.getValue(),
+      {
+        ...newTransaction,
+        id: transactionId,
+        date: this.date,
+      },
+    ])
+
+    return await setDoc(transactionRef, {
+      ...newTransaction,
+      userId: this.userId,
     });
   }
 
